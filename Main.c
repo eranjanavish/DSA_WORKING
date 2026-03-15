@@ -39,6 +39,7 @@ int main(){
             //Counter A - 25 tokens,  counter B - 5 tokens -> after sorting -> counter B - 5, Counter A - 25 tokens
 
             // we select the counter and pass the token to the counters queue
+            //
             break;
 
             case 2:
