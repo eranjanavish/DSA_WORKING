@@ -1,33 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-struct token
-{
-    int token_id;
-    int phone_number;
-    char nic[15];
-    char name[20];
-    char address[30];
-    int priority;
-    struct token *next;
-    
+#include "../Service_List/service_list.h"
+#include "token.h"
 
-};
 
-struct token_list 
-{
-    struct token *head;
-    struct token *tail;
-    
-};
 
 void initialize_token_list(struct token_list *list){
     list->head=NULL;
     list->tail=NULL;
-    printf("List Initialized succesfully!\n");
+    printf(" *** List Initialized succesfully! ***\n\n");
 }
 
-struct token* assign_id(int id){
+struct token* assign_token_id(int id){
     struct token *token;
     token = (struct token*)malloc(sizeof(struct token));
     token->token_id = id;
@@ -46,17 +31,10 @@ void insert_token(struct token_list *list, struct token *token){
         
     }
     else{
-        struct token *temp = list->head;
-        while( temp->next!=NULL){
-            temp=temp->next;
+        list->tail->next=token;
+        list->tail=token;
+        list->tail->next=list->head;
 
-        }
-        temp->next = token;
-        
-        if (token->token_id==5){
-            list->tail =token;
-            
-        }  
         
     }
     
@@ -65,10 +43,10 @@ void insert_token(struct token_list *list, struct token *token){
 void create_tokens_1_100(struct token_list *list){
     
     for(int i=1;i<=5;i++){
-        struct token *token = assign_id(i);
+        struct token *token = assign_token_id(i);
         insert_token(list,token);
     }
-    printf("Daily Tokens Created\n");
+    printf(" *** Daily Tokens Created ***\n\n");
 }
 
 void Display(struct token_list *list){
@@ -87,7 +65,7 @@ struct token* issue_token(struct token_list *list){
     else{
     struct token *token = list->head;
     
-    printf("Token No : %d\n",token->token_id);
+    printf(" ** Token No : %d **\n",token->token_id);
     printf("Enter Customer name :");
     scanf("%s",token->name);
     printf("Enter Customer NIC :");
@@ -96,6 +74,7 @@ struct token* issue_token(struct token_list *list){
     scanf("%s",token->address);
     printf("Enter Customer Phone number :");
     scanf("%d",&token->phone_number);
+    select_service(token);
     printf("Enter Priority level : (1-High , 2-Low) : ");
     scanf("%d",&token->priority);
     list->head=list->head->next;
@@ -112,6 +91,16 @@ char question_answer(char q[20]){
     printf("%s",q);
     scanf(" %c",&answer);
     return answer;
+
+}
+
+struct token* copy_token(struct token* token){
+    struct token *newNode = malloc(sizeof(struct token));
+    *newNode = *token;
+    newNode->next = NULL;
+    newNode->prev = NULL;
+    return newNode;
+
 
 }
 
