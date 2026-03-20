@@ -4,85 +4,216 @@
 #include "../Counter_Mangment_System/CMS.h"
 #include "Queue.h"
 
-void init_queue(struct Queue *q) {
-    q->front = NULL;
-    q->rear = NULL;
-    q->size = 0;
+typedef struct Node
+{
+    int data;
+    struct Node* prev;
+    struct Node* next;
+} Node;
+
+typedef struct Queue
+{
+    Node* front;
+    Node* rear;
+} Queue;
+
+int normalCount = 0;
+int tokenType[1000]; // 1 = Priority , 2 = Normal
+
+Queue PriorityQueue;
+Queue NormalQueue;
+Queue MissQueue;
+
+
+/* CREATE NODE */
+Node* CREATE_NODE(int value)
+{
+    Node* NewNode = (Node*)malloc(sizeof(Node));
+    NewNode->data = value;
+    NewNode->prev = NULL;
+    NewNode->next = NULL;
+    return NewNode;
 }
 
 
-void enqueue(struct Queue *q, struct token *newToken) {
-    if (!newToken) return;
+/* INITIALIZE QUEUE */
+void INIT_QUEUE(Queue* Q)
+{
+    Q->front = NULL;
+    Q->rear = NULL;
+}
 
-    // Case 1: empty queue
-    if (q->front == NULL) {
-        q->front = newToken;
-        q->rear = newToken;
-        newToken->next = NULL;
-    } else if (newToken->priority == 1) {
-        // Case 2: high-priority token
-        // Insert at front if the first token is not high priority
-        if (q->front->priority != 1) {
-            newToken->next = q->front;
-            q->front = newToken;
-        } else {
-            // Find the last high-priority token
-            struct token *temp = q->front;
-            while (temp->next != NULL && temp->next->priority == 1) {
-                temp = temp->next;
-            }
-            newToken->next = temp->next;
-            temp->next = newToken;
 
-            // Update rear if inserted at the end
-            if (newToken->next == NULL) {
-                q->rear = newToken;
-            }
-        }
-    } else {
-        // Case 3: normal-priority token (level 2)
-        q->rear->next = newToken;
-        newToken->next = NULL;
-        q->rear = newToken;
+/* CHECK EMPTY */
+int IS_EMPTY(Queue Q)
+{
+    return (Q.front == NULL);
+}
+
+
+/* CHECK TOKEN EXIST */
+int TOKEN_EXISTS(Queue Q, int value)
+{
+    Node* current = Q.front;
+
+    while (current != NULL)
+    {
+        if (current->data == value)
+            return 1;
+        current = current->next;
+    }
+    return 0;
+}
+
+
+/* ENQUEUE */
+void ENQUEUE(Queue* Q, int value)
+{
+
+    Node* NewNode = CREATE_NODE(value);
+
+    if (Q->front == NULL)
+    {
+        Q->front = NewNode;
+        Q->rear = NewNode;
+    }
+    else
+    {
+        Q->rear->next = NewNode;
+        NewNode->prev = Q->rear;
+        Q->rear = NewNode;
+    }
+}
+
+
+/* DEQUEUE */
+int DEQUEUE(Queue* Q)
+{
+
+    if (Q->front == NULL)
+    {
+        printf("Queue Empty\n");
+        return -1;
     }
 
-    q->size++;
+    Node* temp = Q->front;
+    int value = temp->data;
+
+    Q->front = temp->next;
+
+    if (Q->front != NULL)
+        Q->front->prev = NULL;
+    else
+        Q->rear = NULL;
+
+    free(temp);
+
+    return value;
 }
 
 
-struct token* dequeue(struct Queue *q) {
-    if (q->front == NULL) return NULL; 
+/* DISPLAY QUEUE */
+void DISPLAY(Queue Q)
+{
 
-    struct token *node = q->front;
+    Node* current = Q.front;
 
-    if (q->front == q->rear) {
-        
-        q->front = NULL;
-        q->rear = NULL;
-    } else {
-        q->front = node->next;
-    }
-
-    node->next = NULL;
-    q->size--;
-
-    return node;
-}
-
-void peek(struct Queue* queue){
-    if (queue->front==NULL){
-        printf("Queue is empty\n");
+    if (current == NULL)
+    {
+        printf("Empty\n");
         return;
     }
-    struct token *token = queue->front;
-    printf("\n===================\n");
-    printf("Token id : %d\n",token->token_id);
-    printf("Customer name : %s\n",token->name);
-    printf("Customer id : %s\n",token->nic);
-    printf("Customer Phone number : %d\n",token->phone_number);
-    printf("CUstomer Address: %s\n",token->address);
-    printf("Service type : %s\n",token->service);
-    printf("\n===================\n");
+
+    while (current != NULL)
+    {
+        printf("%d -> ", current->data);
+        current = current->next;
+    }
+
+    printf("NULL\n");
+}
+
+
+/* CALL NEXT CUSTOMER */
+void CALL_NEXT()
+{
+
+    if (!IS_EMPTY(PriorityQueue))
+    {
+
+        printf("\nServing Token: %d\n", DEQUEUE(&PriorityQueue));
+        normalCount = 0;
+
+    }
+    else
+    {
+
+        if (normalCount < 2 && !IS_EMPTY(NormalQueue))
+        {
+
+            printf("\nServing Token: %d\n", DEQUEUE(&NormalQueue));
+            normalCount++;
+
+        }
+        else if (!IS_EMPTY(MissQueue))
+        {
+
+            printf("\nServing Token: %d\n", DEQUEUE(&MissQueue));
+            normalCount = 0;
+
+        }
+        else if (!IS_EMPTY(NormalQueue))
+        {
+
+            printf("\nServing Token: %d\n", DEQUEUE(&NormalQueue));
+
+        }
+        else
+        {
+
+            printf("\nNo Customers in Queue\n");
+
+        }
+    }
+}
+
+
+/* ADD MISSED TOKEN */
+void ADD_TO_MISS_QUEUE(int value)
+{
+
+    /* check if token ever existed */
+    if (tokenType[value] == 0)
+    {
+        printf("Error: Token was never in Priority or Normal queue\n");
+        return;
+    }
+
+    /* prevent duplicates */
+    if (TOKEN_EXISTS(PriorityQueue, value) ||
+            TOKEN_EXISTS(NormalQueue, value) ||
+            TOKEN_EXISTS(MissQueue, value))
+    {
+
+        printf("Token already exists in a queue!\n");
+        return;
+    }
+
+    /* if it was priority -> give special facility */
+    if (tokenType[value] == 1)
+    {
+
+        printf("Missed Priority Customer Added back to Priority Queue\n");
+        ENQUEUE(&PriorityQueue, value);
+
+    }
+    else if (tokenType[value] == 2)
+    {
+
+        printf("Missed Normal Customer Added to Miss Queue\n");
+        ENQUEUE(&MissQueue, value);
+
+    }
 }
 
 
