@@ -1,317 +1,71 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include "../Token_Generator/token.h"
-#include "../Counter_Mangment_System/CMS.h"
-#include "Queue.h"
-
-typedef struct Node
-{
-    int data;
-    struct Node* prev;
-    struct Node* next;
-} Node;
-
-typedef struct Queue
-{
-    Node* front;
-    Node* rear;
-} Queue;
-
-int normalCount = 0;
-int tokenType[1000]; // 1 = Priority , 2 = Normal
-
-Queue PriorityQueue;
-Queue NormalQueue;
-Queue MissQueue;
-
-
-/* CREATE NODE */
-Node* CREATE_NODE(int value)
-{
-    Node* NewNode = (Node*)malloc(sizeof(Node));
-    NewNode->data = value;
-    NewNode->prev = NULL;
-    NewNode->next = NULL;
-    return NewNode;
+void init_queue(struct Queue *q) {
+    q->front = NULL;
+    q->rear = NULL;
+    q->size = 0;
 }
 
-
-/* INITIALIZE QUEUE */
-void INIT_QUEUE(Queue* Q)
-{
-    Q->front = NULL;
-    Q->rear = NULL;
-}
-
-
-/* CHECK EMPTY */
-int IS_EMPTY(Queue Q)
-{
-    return (Q.front == NULL);
-}
-
-
-/* CHECK TOKEN EXIST */
-int TOKEN_EXISTS(Queue Q, int value)
-{
-    Node* current = Q.front;
-
-    while (current != NULL)
-    {
-        if (current->data == value)
-            return 1;
-        current = current->next;
-    }
-    return 0;
-}
-
-
-/* ENQUEUE */
-void ENQUEUE(Queue* Q, int value)
-{
-
-    Node* NewNode = CREATE_NODE(value);
-
-    if (Q->front == NULL)
-    {
-        Q->front = NewNode;
-        Q->rear = NewNode;
-    }
-    else
-    {
-        Q->rear->next = NewNode;
-        NewNode->prev = Q->rear;
-        Q->rear = NewNode;
-    }
-}
-
-
-/* DEQUEUE */
-int DEQUEUE(Queue* Q)
-{
-
-    if (Q->front == NULL)
-    {
-        printf("Queue Empty\n");
-        return -1;
-    }
-
-    Node* temp = Q->front;
-    int value = temp->data;
-
-    Q->front = temp->next;
-
-    if (Q->front != NULL)
-        Q->front->prev = NULL;
-    else
-        Q->rear = NULL;
-
-    free(temp);
-
-    return value;
-}
-
-
-/* DISPLAY QUEUE */
-void DISPLAY(Queue Q)
-{
-
-    Node* current = Q.front;
-
-    if (current == NULL)
-    {
-        printf("Empty\n");
-        return;
-    }
-
-    while (current != NULL)
-    {
-        printf("%d -> ", current->data);
-        current = current->next;
-    }
-
-    printf("NULL\n");
-}
-
-
-/* CALL NEXT CUSTOMER */
-void CALL_NEXT()
-{
-
-    if (!IS_EMPTY(PriorityQueue))
-    {
-
-        printf("\nServing Token: %d\n", DEQUEUE(&PriorityQueue));
-        normalCount = 0;
-
-    }
-    else
-    {
-
-        if (normalCount < 2 && !IS_EMPTY(NormalQueue))
-        {
-
-            printf("\nServing Token: %d\n", DEQUEUE(&NormalQueue));
-            normalCount++;
-
-        }
-        else if (!IS_EMPTY(MissQueue))
-        {
-
-            printf("\nServing Token: %d\n", DEQUEUE(&MissQueue));
-            normalCount = 0;
-
-        }
-        else if (!IS_EMPTY(NormalQueue))
-        {
-
-            printf("\nServing Token: %d\n", DEQUEUE(&NormalQueue));
-
-        }
-        else
-        {
-
-            printf("\nNo Customers in Queue\n");
-
-        }
-    }
-}
-
-
-/* ADD MISSED TOKEN */
-void ADD_TO_MISS_QUEUE(int value)
-{
-
-    /* check if token ever existed */
-    if (tokenType[value] == 0)
-    {
-        printf("Error: Token was never in Priority or Normal queue\n");
-        return;
-    }
-
-    /* prevent duplicates */
-    if (TOKEN_EXISTS(PriorityQueue, value) ||
-            TOKEN_EXISTS(NormalQueue, value) ||
-            TOKEN_EXISTS(MissQueue, value))
-    {
-
-        printf("Token already exists in a queue!\n");
-        return;
-    }
-
-    /* if it was priority -> give special facility */
-    if (tokenType[value] == 1)
-    {
-
-        printf("Missed Priority Customer Added back to Priority Queue\n");
-        ENQUEUE(&PriorityQueue, value);
-
-    }
-    else if (tokenType[value] == 2)
-    {
-
-        printf("Missed Normal Customer Added to Miss Queue\n");
-        ENQUEUE(&MissQueue, value);
-
-    }
-}
-int main()
-    {
-
-        int choice, token, type;
-
-        INIT_QUEUE(&PriorityQueue);
-        INIT_QUEUE(&NormalQueue);
-        INIT_QUEUE(&MissQueue);
-
-        while (1)
-        {
-
-            system("cls");
-
-            printf("\n====== Queue Management System ======\n");
-            printf("1. Add Customer Token\n");
-            printf("2. Add Missed Token\n");
-            printf("3. Call Next Customer\n");
-            printf("4. Display Queues\n");
-            printf("5. Exit\n");
-            printf("Enter choice: ");
-            scanf("%d", &choice);
-
-            switch (choice)
-            {
-
-            case 1:
-                printf("Enter Token Number: ");
-                scanf("%d", &token);
-
-                printf("Enter Type (1 = Priority, 2 = Normal): ");
-                scanf("%d", &type);
-
-                if (TOKEN_EXISTS(PriorityQueue, token) ||
-                        TOKEN_EXISTS(NormalQueue, token) ||
-                        TOKEN_EXISTS(MissQueue, token))
-                {
-
-                    printf("Token already exists!\n");
-
-                }
-                else
-                {
-
-                    if (type == 1)
-                    {
-                        ENQUEUE(&PriorityQueue, token);
-                        tokenType[token] = 1;
-                    }
-                    else if (type == 2)
-                    {
-                        ENQUEUE(&NormalQueue, token);
-                        tokenType[token] = 2;
-                    }
-                    else
-                    {
-                        printf("Invalid Type!\n");
-                    }
-                }
-                break;
-
-            case 2:
-                printf("Enter Missed Token Number: ");
-                scanf("%d", &token);
-                ADD_TO_MISS_QUEUE(token);
-                break;
-
-            case 3:
-                CALL_NEXT();
-                break;
-
-            case 4:
-                printf("\nPriority Queue: ");
-                DISPLAY(PriorityQueue);
-
-                printf("Normal Queue: ");
-                DISPLAY(NormalQueue);
-
-                printf("Miss Queue: ");
-                DISPLAY(MissQueue);
-                break;
-
-            case 5:
-                printf("\nExiting Program...\n");
-                exit(0);
-
-            default:
-                printf("Invalid Choice\n");
+void enqueue(struct Queue *q, struct token *newToken) {
+    if (!newToken) return;
+
+    if (q->front == NULL) {
+        q->front = newToken;
+        q->rear = newToken;
+        newToken->next = NULL;
+    } else if (newToken->priority == 1) {
+        if (q->front->priority != 1) {
+            newToken->next = q->front;
+            q->front = newToken;
+        } else {
+            struct token *temp = q->front;
+            while (temp->next != NULL && temp->next->priority == 1) {
+                temp = temp->next;
             }
+            newToken->next = temp->next;
+            temp->next = newToken;
 
-            printf("\nPress Enter to continue...");
-            getchar();
-            getchar();
+            if (newToken->next == NULL) {
+                q->rear = newToken;
+            }
         }
-
-        return 0;
+    } else {
+        q->rear->next = newToken;
+        newToken->next = NULL;
+        q->rear = newToken;
     }
 
+    q->size++;
+}
 
+struct token* dequeue(struct Queue *q) {
+    if (q->front == NULL) return NULL; 
 
+    struct token *node = q->front;
+
+    if (q->front == q->rear) {
+        q->front = NULL;
+        q->rear = NULL;
+    } else {
+        q->front = node->next;
+    }
+
+    node->next = NULL;
+    q->size--;
+
+    return node;
+}
+
+void peek(struct Queue* queue){
+    if (queue->front==NULL){
+        printf("Queue is empty\n");
+        return;
+    }
+    struct token *token = queue->front;
+    printf("\n===================\n");
+    printf("Token id : %d\n",token->token_id);
+    printf("Customer name : %s\n",token->name);
+    printf("Customer id : %s\n",token->nic);
+    printf("Customer Phone number : %d\n",token->phone_number);
+    printf("CUstomer Address: %s\n",token->address);
+    printf("Service type : %s\n",token->service);
+    printf("\n===================\n");
+}
