@@ -20,16 +20,17 @@ void push(struct Stack* stack,struct token* token){
     }
 }
 
-void pop(struct Stack* stack) {
+struct token* pop(struct Stack* stack) {
     if (stack->top == NULL) {
         printf("Stack is Empty!\n");
-        return;
+        return NULL;
     }
 
-    struct token* temp = stack->top;   // store top node
-    stack->top = stack->top->next;     // move top down
+    struct token* temp = stack->top;   
+    stack->top = stack->top->next; 
+    temp->next = NULL;
 
-    free(temp); // return popped node
+    return temp;
 }
 
 void print_stack(struct Stack* stack) {
@@ -42,8 +43,31 @@ void print_stack(struct Stack* stack) {
 
     printf("Stack (top to bottom):\n");
     while (current != NULL) {
-        printf("%s -> ", current->name); // change 'value' if your struct uses another field
+        printf("%s -> ", current->name); 
         current = current->next;
     }
     printf("NULL\n");
 }
+
+void correct_last_service(struct Stack *completed, struct Stack *problem) {
+    struct token *token = pop(completed);
+    if (token != NULL) {
+        push(problem, token);
+        printf("\n** Last completed service moved to problem stack **\n");
+        printf("Token ID: %d | Name: %s\n", token->token_id, token->name);
+    } else {
+        printf("\n** No completed services to correct **\n");
+    }
+}
+
+void clear_stack(struct Stack *stack) {
+    if (stack->top == NULL) {
+        printf("Stack is already empty\n");
+        return;
+    }
+    while (stack->top != NULL) {
+        pop(stack);
+    }
+    printf("Stack cleared\n");
+}
+
