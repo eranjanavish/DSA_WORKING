@@ -80,20 +80,28 @@ struct token* gather_info(int id){
     struct token *token = (struct token*)malloc(sizeof(struct token));
     token->token_id = id;
     token->date = gettime();
-    printf(" ** Token No : %d **\n",token->token_id);
-    printf("Enter Customer name :");
+    printf("\n========================================\n");
+    printf("         CREATE NEW TOKEN               \n");
+    printf("========================================\n\n");
+    printf(" **          Token No : %d           **\n",token->token_id);
+    printf("Enter Customer Name          : ");
     scanf("%s",token->name);
-    printf("Enter Customer NIC :");
+    printf("\nEnter Customer NIC         : ");
     scanf("%s",token->nic);
-    printf("Enter Customer address :");
+    printf("\nEnter Customer Adress      : ");
     scanf("%s",token->address);
-    printf("Enter Customer Phone number :");
+    printf("\nEnter Customer Phone number   :");
     scanf("%d",&token->phone_number);
-    select_service(token); // select the service from the list array
-    printf("Enter Priority level : (1-High , 2-Low) : ");
+    select_service(token); 
+    printf("\n Select Priority Level\n");
+    printf("   1 -> High Priority\n");
+    printf("   2 -> Low Priority\n");
+    printf(" Enter choice : ");
     scanf("%d",&token->priority);
     
-    printf("Token Created\n");
+    printf("\n========================================\n");
+    printf("        TOKEN CREATED SUCCESSFULLY      \n");
+    printf("========================================\n\n");
     printf("\n\n\n\n\n\n\n\n\n\n");
     return token;
 }

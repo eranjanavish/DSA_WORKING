@@ -64,13 +64,17 @@ void peek(struct Queue* queue){
         return;
     }
     struct token *token = queue->front;
-    printf("\n===================\n");
-    printf("Token id : %d\n",token->token_id);
-    printf("Customer name : %s\n",token->name);
-    printf("Customer id : %s\n",token->nic);
-    printf("Customer Phone number : %d\n",token->phone_number);
-    printf("CUstomer Address: %s\n",token->address);
-    printf("Issue Date: %lld\n",token->date);
-    printf("Service type : %s\n",token->service);
-    printf("\n===================\n");
+    printf("\n========================================\n");
+    printf("            TOKEN DETAILS               \n");
+    printf("========================================\n");
+
+    printf(" %-22s : %d\n",  "Token ID", token->token_id);
+    printf(" %-22s : %s\n",  "Customer Name", token->name);
+    printf(" %-22s : %s\n",  "Customer NIC", token->nic);
+    printf(" %-22s : %d\n",  "Phone Number", token->phone_number);
+    printf(" %-22s : %s\n",  "Address", token->address);
+    printf(" %-22s : %lld\n","Issue Date", token->date/1000000);
+    printf(" %-22s : %s\n",  "Service Type", token->service);
+
+    printf("========================================\n\n");
 }

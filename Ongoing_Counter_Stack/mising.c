@@ -49,7 +49,7 @@ void delete_id(struct Missing_list *list, struct token* token) {
 
 struct token* search_missing(struct Missing_list *list){
     if (list->head==NULL){
-        printf("Mising List is Empty\n");
+        printf("*** Mising List is Empty ***\n");
         return NULL;
     }
     struct token *temp = list->head;
@@ -58,15 +58,20 @@ struct token* search_missing(struct Missing_list *list){
             printf("End of the list reached...\n\n");
             return NULL;
         }
-        printf("============\n");
-        printf("Token id : %d\n",temp->token_id);
-        printf("Customer name : %s\n",temp->name);
-        printf("Customer id : %s\n",temp->nic);
-        printf("Customer Phone number : %d\n",temp->phone_number);
-        printf("CUstomer Address: %s\n",temp->address);
-        printf("Service type : %s\n",temp->service);
-        printf("============\n");
-        char answer = question_answer("Select - s | Next - n\n");
+        printf("\n========================================\n");
+        printf("            TOKEN DETAILS               \n");
+        printf("========================================\n");
+
+        printf(" %-22s : %d\n",  "Token ID", temp->token_id);
+        printf(" %-22s : %s\n",  "Customer Name", temp->name);
+        printf(" %-22s : %s\n",  "Customer NIC", temp->nic);
+        printf(" %-22s : %d\n",  "Phone Number", temp->phone_number);
+        printf(" %-22s : %s\n",  "Address", temp->address);
+        printf(" %-22s : %lld\n","Issue Date", temp->date/1000000);
+        printf(" %-22s : %s\n",  "Service Type", temp->service);
+
+        printf("========================================\n\n");
+        char answer = question_answer("Select - s | Next - n\n==>");
         switch (answer)
         {
         case 'n':

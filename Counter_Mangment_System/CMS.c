@@ -76,8 +76,13 @@ void display_counter(struct Counter* counter_list[],struct token *token){
     {
         if (index<0) index=0;
         else if (index>1) index=1;
-        printf("Counter : %d -> %d\n", counter_list[index]->id, counter_list[index]->queue->size);
-        printf("prev - p | select - s | next - n\n");
+        printf("\n\n___________________________________________\n");
+        printf("\n|  Counter Number    |   Active Token No  |   \n");
+        printf("\n|       %d            |        %d           |\n", counter_list[index]->id, counter_list[index]->queue->size);
+        printf("___________________________________________\n");
+        printf("\n\n----------------------------------\n");
+        printf("prev - p | select - s | next - n   \n");
+        printf("----------------------------------\n===>");
         char answer;
         scanf(" %c",&answer);
         if(answer=='p')
@@ -108,8 +113,13 @@ struct Counter* display_counter_rtn_Q(struct Counter* counter_list[]){
     {
         if (index<0) index=0;
         else if (index>1) index=1;
-        printf("Counter : %d\n", counter_list[index]->id);
-        printf("prev - p | select - s | next - n\n");
+        printf("\n\n___________________________________________\n");
+        printf("\n|  Counter Number    |   Active Token No  |   \n");
+        printf("\n|       %d            |        %d           |\n", counter_list[index]->id, counter_list[index]->queue->size);
+        printf("___________________________________________\n");
+        printf("\n\n----------------------------------\n");
+        printf("prev - p | select - s | next - n   \n");
+        printf("----------------------------------\n===>");
         char answer;
         scanf(" %c",&answer);
         if(answer=='p')

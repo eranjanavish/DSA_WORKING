@@ -11,17 +11,17 @@
 #include "Service_List/service_list.h"
 
 void serve_customer(struct Stack *stack,struct token *token){
-    char is_valid = question_answer("Is the token valid? (y/n)\n");
+    char is_valid = question_answer("Is the token valid? (y/n)\n==>");
                             
                             if (is_valid=='n'){
-                                printf("Token Deleted\n");
+                                printf("+++++  Token Deleted  ++++ \n");
                                 free(token);
                                 
                             }
                             else{
                                 token->serviced_date = gettime();
                                 push(stack,token);
-                                printf(" ** Token is serviced ** \n\n");
+                                printf(" ++++ Token is serviced ++++ \n\n");
 
                             }
 }
@@ -46,13 +46,17 @@ int main(){
         //Starts the program
         while(1){
 
-        printf("\n\n\n====== Office Managment System ======\n\n");
-        printf("1. Issue a Token\n");
-        printf("2. Counter Operator Access\n");
-        printf("3. Department Manager Access\n");
-        printf("4. Completed Service Records\n");
-        printf("5. Exit\n\n");
-        printf("======  ======\n");
+        printf("========================================\n");
+        printf("        OFFICE MANAGEMENT SYSTEM        \n");
+        printf("========================================\n\n");
+        
+        printf("|1. | ->  Issue a Token\n");
+        printf("|2. | ->  Counter Operator Access\n");
+        printf("|3. | ->  Department Manager Access\n");
+        printf("|4. | ->  Completed Service Records\n");
+        printf("|5. | ->  Exit\n\n");
+        printf("=======================================\n");
+    
 
         
         int choice;
@@ -72,13 +76,20 @@ int main(){
                 printf("=== Option 2 Selected ===\n\n");
                 printf("\n==== Counter Operator Terminal ====\n");
                 struct Counter *counter = display_counter_rtn_Q(counter_list);
-                printf("============\n\n");
+                printf("-------------------------------------\n\n");
                 printf("Selected Counter - %d\n",counter->id);
 
                 
                 bool is_on = true;
                 while (is_on){
-               char option = question_answer("\n\nAccess Queue - q | Find Missed Token - m | Correct Last Service - c | Exit to main menu - e\n");
+               char option = question_answer("\n========================================\n"
+                                                "            QUEUE OPTIONS               \n"
+                                                "========================================\n"
+                                                "  [Q] Access Queue\n"
+                                                "  [M] Find Missed Token\n"
+                                                "  [E] Exit to Main Menu\n"
+                                                "----------------------------------------\n"
+                                                " Enter your choice : ");
                 
                 if(option=='q')
                        {
@@ -87,9 +98,9 @@ int main(){
                        
                         struct token *token_o2 = dequeue(counter->queue);
                         if(token_o2!=NULL){
-                        char is_available = question_answer("Is the customer available? (y/n)\n");
+                        char is_available = question_answer("Is the customer available? (y/n)\n==>");
                         if(is_available=='y'){
-                            char is_problem = question_answer("Is there a problem?\n");
+                            char is_problem = question_answer("Is there a problem?\n==>");
                             if(is_problem=='n')
                                 {serve_customer(counter->stack,token_o2);}
                             else{
@@ -135,11 +146,25 @@ int main(){
             printf("=== Department Manager Terminal ===\n");
             struct Active Active_service_record;
             init_Active(&Active_service_record);
-           char answer = question_answer("Monitor Counter - m | Add new Service - s | End of Day Reset - r\n");
+           char answer = question_answer("\n========================================\n"
+                                                "             OPTIONS               \n"
+                                                "========================================\n"
+                                                "  [m] Monitor Counter\n"
+                                                "  [r] End of day reset\n"
+                                                "  [s] Add new Service\n"
+                                                "----------------------------------------\n"
+                                                " Enter your choice : ");
             if(answer=='m'){
                 
                 struct Counter *counter_03 = display_counter_rtn_Q(counter_list);
-                char answer = question_answer("Monitor Queue - q | Monitor Completed tokens - s | Monitor Problems - p \n");
+                char answer = question_answer("\n========================================\n"
+                                                "             OPTIONS               \n"
+                                                "========================================\n"
+                                                "  [q] Access Quese\n"
+                                                "  [s] Access Completed Token\n"
+                                                "  [p] Access Problamatic Tokens\n"
+                                                "----------------------------------------\n"
+                                                " Enter your choice : ");
 
                 switch (answer)
                 {
@@ -166,7 +191,7 @@ int main(){
 
         else if(answer=='r')
         {
-                char confirm = question_answer("Are you sure? All records will be cleared (y/n)\n");
+                char confirm = question_answer("Are you sure? All records will be cleared (y/n)\n==>");
                     if(confirm=='y'){
                     for(int i=0;i<2;i++){
                     clear_stack(counter_list[i]->stack);

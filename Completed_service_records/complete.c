@@ -137,18 +137,20 @@ void complete_list_view(struct complete *list){
         int is_on = 1;
         while (is_on)
     {
-        printf("\n===================\n");
-        printf("Token id : %d\n",token->token_id);
-        printf("Customer name : %s\n",token->name);
-        printf("Customer id : %s\n",token->nic);
-        printf("Customer Phone number : %d\n",token->phone_number);
-        printf("CUstomer Address: %s\n",token->address);
-        printf("Issued Date : %lld\n",(token->date)/1000000);
-        printf("Serviced Date : %lld\n",(token->serviced_date)/1000000);
-        printf("Service Time : %llds\n",service_time(token));
-        printf("Service type : %s\n",token->service);
-        printf("\n===================\n");
-        char answer = question_answer(" Prev - p | Next - n | Exit - e \n");
+        printf("\n========================================\n");
+        printf("            TOKEN DETAILS               \n");
+        printf("========================================\n");
+    
+        printf(" %-22s : %d\n",  "Token ID", token->token_id);
+        printf(" %-22s : %s\n",  "Customer Name", token->name);
+        printf(" %-22s : %s\n",  "Customer NIC", token->nic);
+        printf(" %-22s : %d\n",  "Phone Number", token->phone_number);
+        printf(" %-22s : %s\n",  "Address", token->address);
+        printf(" %-22s : %lld\n","Issue Date", token->date/1000000);
+        printf(" %-22s : %s\n",  "Service Type", token->service);
+    
+        printf("========================================\n\n");
+        char answer = question_answer(" Prev - p | Next - n | Exit - e \n==>");
         if(answer=='p')
             token=token->prev;
         else if (answer=='n')

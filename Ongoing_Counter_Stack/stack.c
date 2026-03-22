@@ -62,12 +62,12 @@ void correct_last_service(struct Stack *completed, struct Stack *problem) {
 
 void clear_stack(struct Stack *stack) {
     if (stack->top == NULL) {
-        printf("Stack is already empty\n");
+        printf("*** Stack is already empty ***\n");
         return;
     }
     while (stack->top != NULL) {
         pop(stack);
     }
-    printf("Stack cleared\n");
+    printf("*** Stack cleared ***\n");
 }
 

@@ -54,7 +54,7 @@ void select_service(struct token *token){
 void enter_new(){
     int size = size_service();
     if (size >= 9) {
-        printf("Service list is full!\n");
+        printf("++++ Service list is full! ++++\n");
         return;
     }
     printf("=== Enter New service ===\n");
@@ -63,7 +63,7 @@ void enter_new(){
     
     strcpy(service_list[size],new_service);
     strcpy(service_list[size+1],"-1");
-    printf("+++ Service Entered to the System\n");
+    printf("+++ Service Entered to the System +++\n");
     
     
 }
