@@ -161,7 +161,7 @@ int main(){
                 char answer = question_answer("\n========================================\n"
                                                 "             OPTIONS               \n"
                                                 "========================================\n"
-                                                "  [q] Access Quese\n"
+                                                "  [q] Access Queue\n"
                                                 "  [s] Access Completed Token\n"
                                                 "  [p] Access Problamatic Tokens\n"
                                                 "----------------------------------------\n"
