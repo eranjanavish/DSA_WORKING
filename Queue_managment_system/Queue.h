@@ -1,36 +1,52 @@
-// token_queue.h
-#ifndef TOKEN_QUEUE_H
-#define TOKEN_QUEUE_H
+#ifndef QUEUE_H
+#define QUEUE_H
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "../Token_Generator/token.h"  // Make sure this path is correct
-#include "../Counter_Mangment_System/CMS.h"
 
-// ------------------------
-// Queue structure
-// ------------------------
-struct Queue {
-    struct token *front;  // front of the queue
-    struct token *rear;   // rear of the queue
-    int size;             // number of items
-};
 
-// ------------------------
-// Function prototypes
-// ------------------------
+typedef struct Node
+{
+    int data;
+    struct Node* prev;
+    struct Node* next;
+} Node;
 
-// Initialize the queue
-void init_queue(struct Queue *q);
-
-// Add a token to the end of the queue
-void enqueue(struct Queue *q, struct token *node);
-
-// Remove a token from the front of the queue
-struct token* dequeue(struct Queue *q);
-void peek(struct Queue* queue);
+typedef struct Queue
+{
+    Node* front;
+    Node* rear;
+} Queue;
 
 
 
 
-#endif // TOKEN_QUEUE_H
+extern int normalCount;
+extern int tokenType[1000];
+
+extern Queue PriorityQueue;
+extern Queue NormalQueue;
+extern Queue MissQueue;
+
+
+
+
+/* Node */
+Node* CREATE_NODE(int value);
+
+/* Queue Operations */
+void INIT_QUEUE(Queue* Q);
+int IS_EMPTY(Queue Q);
+int TOKEN_EXISTS(Queue Q, int value);
+
+void ENQUEUE(Queue* Q, int value);
+int DEQUEUE(Queue* Q);
+
+void DISPLAY(Queue Q);
+
+/* System Functions */
+void CALL_NEXT();
+void ADD_TO_MISS_QUEUE(int value);
+
+
+#endif

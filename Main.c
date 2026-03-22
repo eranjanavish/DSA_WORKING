@@ -78,7 +78,7 @@ int main(){
                 
                 bool is_on = true;
                 while (is_on){
-                char option = question_answer("\n\nAccess Queue - q | Find Missed Token - m | Exit to main menu - e\n");
+               char option = question_answer("\n\nAccess Queue - q | Find Missed Token - m | Correct Last Service - c | Exit to main menu - e\n");
                 
                 if(option=='q')
                        {
@@ -112,9 +112,14 @@ int main(){
                                 serve_customer(counter->stack,missing_token);
                         
 }
-                else{
-                    is_on=false;
-                }
+              else if(option=='c')
+                     {
+                            correct_last_service(counter->stack, counter->problem);
+}
+            else
+                         {
+                            is_on=false;
+}
                         
                 
               
@@ -130,7 +135,7 @@ int main(){
             printf("=== Department Manager Terminal ===\n");
             struct Active Active_service_record;
             init_Active(&Active_service_record);
-            char answer = question_answer("Monitor Counter - m | Add new Service - s\n");
+           char answer = question_answer("Monitor Counter - m | Add new Service - s | End of Day Reset - r\n");
             if(answer=='m'){
                 
                 struct Counter *counter_03 = display_counter_rtn_Q(counter_list);
@@ -158,6 +163,21 @@ int main(){
         else if(answer=='s'){
             enter_new();
         }
+
+        else if(answer=='r')
+        {
+                char confirm = question_answer("Are you sure? All records will be cleared (y/n)\n");
+                    if(confirm=='y'){
+                    for(int i=0;i<2;i++){
+                    clear_stack(counter_list[i]->stack);
+                    clear_stack(counter_list[i]->problem);
+        }
+        printf("\n** All stacks cleared. System reset for new day **\n");
+    }
+    else{
+        printf("** Reset cancelled **\n");
+    }
+}    
         else{
             printf("** Wrong input selected **\n");
         }

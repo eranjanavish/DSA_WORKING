@@ -3,15 +3,17 @@
 
 #include "../Token_Generator/token.h"
 
-// Stack structure
+
 struct Stack {
     struct token *top;
 };
 
-// Function declarations
+
 void init_stack(struct Stack* stack);
 void push(struct Stack* stack, struct token* token);
-void pop(struct Stack* stack);
+struct token* pop(struct Stack* stack); 
 void print_stack(struct Stack* stack);
+void correct_last_service(struct Stack *completed, struct Stack *problem);
+void clear_stack(struct Stack *stack);
 
 #endif
