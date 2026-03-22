@@ -54,7 +54,7 @@ struct token* search_missing(struct Missing_list *list){
     }
     struct token *temp = list->head;
     while (1){
-        if(temp==list->tail){
+        if(temp==NULL){
             printf("End of the list reached...\n\n");
             return NULL;
         }

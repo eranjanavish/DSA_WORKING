@@ -3,19 +3,15 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "../Token_Generator/token.h"
 
 
-typedef struct Node
-{
-    int data;
-    struct Node* prev;
-    struct Node* next;
-} Node;
 
 typedef struct Queue
 {
-    Node* front;
-    Node* rear;
+    struct token* front;
+    struct token* rear;
+    int size;
 } Queue;
 
 
@@ -32,21 +28,23 @@ extern Queue MissQueue;
 
 
 /* Node */
-Node* CREATE_NODE(int value);
-
-/* Queue Operations */
-void INIT_QUEUE(Queue* Q);
-int IS_EMPTY(Queue Q);
-int TOKEN_EXISTS(Queue Q, int value);
-
-void ENQUEUE(Queue* Q, int value);
-int DEQUEUE(Queue* Q);
-
-void DISPLAY(Queue Q);
-
-/* System Functions */
-void CALL_NEXT();
-void ADD_TO_MISS_QUEUE(int value);
 
 
+// /* Queue Operations */
+// void INIT_QUEUE(Queue* Q);
+// int IS_EMPTY(Queue Q);
+// int TOKEN_EXISTS(Queue Q, int value);
+
+// void ENQUEUE(Queue* Q, int value);
+// int DEQUEUE(Queue* Q);
+
+// void DISPLAY(Queue Q);
+
+// /* System Functions */
+// void CALL_NEXT();
+// void ADD_TO_MISS_QUEUE(int value);
+void peek(struct Queue* queue);
+struct token* dequeue(struct Queue *q);
+void enqueue(struct Queue *q, struct token *newToken);
+void init_queue(struct Queue *q);
 #endif

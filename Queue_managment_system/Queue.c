@@ -1,3 +1,7 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "Queue.h"
+
 void init_queue(struct Queue *q) {
     q->front = NULL;
     q->rear = NULL;
