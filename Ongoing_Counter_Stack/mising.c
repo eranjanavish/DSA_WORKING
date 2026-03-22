@@ -16,10 +16,9 @@ void insert(struct Missing_list *list, struct token* token) {
     if (list->head == NULL) {
         list->head = token;
         list->tail = token;
-        token->next = token; 
+         
     }
     else {
-        token->next = list->head;   
         list->tail->next = token;   
         list->tail = token;         
     }
@@ -37,8 +36,8 @@ void delete_id(struct Missing_list *list, struct token* token) {
             temp=temp->next;
         }
         if(temp->next==list->tail){
+            temp->next=NULL;
             list->tail=temp;
-            list->tail->next=list->head;
         }
         else{
             temp->next=temp->next->next;
@@ -55,6 +54,10 @@ struct token* search_missing(struct Missing_list *list){
     }
     struct token *temp = list->head;
     while (1){
+        if(temp==list->tail){
+            printf("End of the list reached...\n\n");
+            return NULL;
+        }
         printf("============\n");
         printf("Token id : %d\n",temp->token_id);
         printf("Customer name : %s\n",temp->name);

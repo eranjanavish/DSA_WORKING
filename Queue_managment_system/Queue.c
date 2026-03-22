@@ -81,6 +81,7 @@ void peek(struct Queue* queue){
     printf("Customer id : %s\n",token->nic);
     printf("Customer Phone number : %d\n",token->phone_number);
     printf("CUstomer Address: %s\n",token->address);
+    printf("Issue Date: %lld\n",token->date);
     printf("Service type : %s\n",token->service);
     printf("\n===================\n");
 }

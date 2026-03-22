@@ -80,7 +80,6 @@ void swap_data(struct token *a, struct token *b) {
     strcpy(temp_name, a->name);
     strcpy(temp_address, a->address);
 
-    // copy b → a
     a->token_id = b->token_id;
     a->phone_number = b->phone_number;
     a->priority = b->priority;
@@ -89,7 +88,6 @@ void swap_data(struct token *a, struct token *b) {
     strcpy(a->name, b->name);
     strcpy(a->address, b->address);
 
-    // copy temp → b
     b->token_id = temp_id;
     b->phone_number = temp_phone;
     b->priority = temp_priority;
@@ -108,20 +106,15 @@ void selectionSort(struct complete *list) {
     do {
         struct token *min = current;
         struct token *temp = current->next;
-
-        // find minimum token_id
         while (temp != list->head) {
-            if (temp->token_id < min->token_id) {
+            if (temp->date < min->date) {
                 min = temp;
             }
             temp = temp->next;
         }
-
-        // swap data
         if (min != current) {
             swap_data(current, min);
         }
-
         current = current->next;
 
     } while (current != list->head);
@@ -150,6 +143,9 @@ void complete_list_view(struct complete *list){
         printf("Customer id : %s\n",token->nic);
         printf("Customer Phone number : %d\n",token->phone_number);
         printf("CUstomer Address: %s\n",token->address);
+        printf("Issued Date : %lld\n",(token->date)/1000000);
+        printf("Serviced Date : %lld\n",(token->serviced_date)/1000000);
+        printf("Service Time : %llds\n",service_time(token));
         printf("Service type : %s\n",token->service);
         printf("\n===================\n");
         char answer = question_answer(" Prev - p | Next - n | Exit - e \n");

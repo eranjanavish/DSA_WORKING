@@ -19,6 +19,7 @@ void serve_customer(struct Stack *stack,struct token *token){
                                 
                             }
                             else{
+                                token->serviced_date = gettime();
                                 push(stack,token);
                                 printf(" ** Token is serviced ** \n\n");
 
@@ -62,7 +63,8 @@ int main(){
 
             printf("\n\n=== Token issuing terminal ===\n\n");
             struct token *token_o1 = issue_token(&token_list);
-            display_counter(counter_list,token_o1);
+            if(token_o1!=NULL)
+                display_counter(counter_list,token_o1);
 
             break;
 

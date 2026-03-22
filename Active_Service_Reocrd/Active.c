@@ -38,7 +38,7 @@ struct token* print_Active_Queue(struct Queue *queue,struct Active *ASR){
     while(token!=NULL){
         struct token *newNode =  copy_token(token);
         
-        printf("Entering to ASR %s\n",token->name);
+        
         insert_Active(ASR,newNode);
         token=token->next;
 

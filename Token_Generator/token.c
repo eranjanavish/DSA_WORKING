@@ -1,70 +1,85 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "../Service_List/service_list.h"
-#include "token.h"
+    #include <stdio.h>
+    #include <stdlib.h>
+    #include <string.h>
+    #include <time.h>
+    #include "../Service_List/service_list.h"
+    #include "token.h"
 
 
 
-void initialize_token_list(struct token_list *list){
-    list->head=NULL;
-    list->tail=NULL;
-    printf(" *** List Initialized succesfully! ***\n\n");
+    void initialize_token_list(struct token_list *list){
+        list->head=NULL;
+        list->tail=NULL;
+        printf(" *** List Initialized succesfully! ***\n\n");
+    }
+
+    struct token_list_item* createToken(int id){
+        struct token_list_item *token;
+        token = (struct token_list_item*)malloc(sizeof(struct token_list_item));
+        token->id = id;
+        token->next=NULL;
+        return token;
+
+
+
+    }
+
+    void insertToken(struct token_list *list, struct token_list_item *token){
+        if (list->head==NULL){
+            list->head=token;
+            list->tail=token;
+            token->next = token;
+            
+            
+        }
+        else{
+            list->tail->next=token;
+            list->tail=token;
+            list->tail->next=list->head;
+            
+
+            
+        }
+        
+    }
+
+    void create_tokens_1_100(struct token_list *list){
+        //create tokens and assign id to them and add them to the list
+        for(int i=1;i<=3;i++){
+            struct token_list_item *token = createToken(i);
+            insertToken(list,token);
+        }
+        printf(" *** Daily Tokens Created ***\n\n");
+    }
+
+    
+
+
+    long long gettime(){
+        time_t now = time(NULL);
+        struct tm *t = localtime(&now);
+
+        return (long long)(t->tm_year + 1900) * 10000000000 +
+            (long long)(t->tm_mon + 1) * 100000000 +
+            (long long)t->tm_mday * 1000000 +
+            (long long)t->tm_hour * 10000 +
+            (long long)t->tm_min * 100 +
+            (long long)t->tm_sec;
+    }
+
+
+int getHour(){
+    time_t now = time(NULL);
+    struct tm *t = localtime(&now);
+    int hour = t->tm_hour;
+    return hour;
+            
 }
 
-struct token* assign_token_id(int id){
-    struct token *token;
-    token = (struct token*)malloc(sizeof(struct token));
+struct token* gather_info(int id){
+    struct token *token = (struct token*)malloc(sizeof(struct token));
     token->token_id = id;
-    token->next=NULL;
-    return token;
-
-
-
-}
-
-void insert_token(struct token_list *list, struct token *token){
-    if (list->head==NULL){
-        list->head=token;
-        list->tail=token;
-        
-        
-    }
-    else{
-        list->tail->next=token;
-        list->tail=token;
-        list->tail->next=list->head;
-
-        
-    }
-    
-}
-
-void create_tokens_1_100(struct token_list *list){
-    
-    for(int i=1;i<=5;i++){
-        struct token *token = assign_token_id(i);
-        insert_token(list,token);
-    }
-    printf(" *** Daily Tokens Created ***\n\n");
-}
-
-void Display(struct token_list *list){
-    struct token *temp= list->head;
-    printf("Display Tokens \n");
-    while(temp!=NULL){
-        printf("Token %d\n",temp->token_id);
-        temp=temp->next;
-    }
-}
-
-struct token* issue_token(struct token_list *list){
-    if(list->head == NULL)
-        {printf("Token Limit Reached\n");
-        return NULL;}
-    else{
-    struct token *token = list->head;
-    
+    token->date = gettime();
     printf(" ** Token No : %d **\n",token->token_id);
     printf("Enter Customer name :");
     scanf("%s",token->name);
@@ -74,35 +89,73 @@ struct token* issue_token(struct token_list *list){
     scanf("%s",token->address);
     printf("Enter Customer Phone number :");
     scanf("%d",&token->phone_number);
-    select_service(token);
+    select_service(token); // select the service from the list array
     printf("Enter Priority level : (1-High , 2-Low) : ");
     scanf("%d",&token->priority);
-    list->head=list->head->next;
+    
     printf("Token Created\n");
     printf("\n\n\n\n\n\n\n\n\n\n");
     return token;
+}
+
+int can_issue = 1;
+struct token* issue_token(struct token_list *list){
+        struct token_list_item *curr_token = list->head;
+        list->head=list->head->next;
+        list->tail=curr_token;
+        
+        int id = curr_token->id;
+
+        if(curr_token->id == 3 && getHour()<12)
+            {   
+                can_issue = 0;
+            }
+        else if(curr_token->id < 3 && getHour()>=12){
+            can_issue = 1;
+        }
+        else if(curr_token->id == 3 && getHour()>12){
+            can_issue = 0;
+        }
+
+        if(can_issue){
+            return gather_info(id);
+
+        }
+        else{
+            printf("Token Limit Reached...\nResseting after next session\n\n");
+            return NULL;
+        }
+        
+       
+        
+        
+        
+        
+
     }
 
-}
+    long long service_time(struct token *token){
+        return token->serviced_date - token->date; //get how many second it took to service a token
+    }
 
-char question_answer(char q[20]){
-    char answer;
+    char question_answer(char q[20]){
+        char answer;
 
-    printf("%s",q);
-    scanf(" %c",&answer);
-    return answer;
+        printf("%s",q);
+        scanf(" %c",&answer);
+        return answer;
 
-}
+    }
 
-struct token* copy_token(struct token* token){
-    struct token *newNode = malloc(sizeof(struct token));
-    *newNode = *token;
-    newNode->next = NULL;
-    newNode->prev = NULL;
-    return newNode;
+    struct token* copy_token(struct token* token){
+        struct token *newNode = malloc(sizeof(struct token)); //copy a token from one struct to another
+        *newNode = *token;
+        newNode->next = NULL;
+        newNode->prev = NULL;
+        return newNode;
 
 
-}
+    }
 
 
 
