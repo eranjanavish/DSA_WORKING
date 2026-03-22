@@ -23,7 +23,8 @@ void insert_Active(struct Active *list, struct token* token) {
     else {
         token->next = list->head;   
         list->tail->next = token;   
-        list->tail = token;         
+        list->tail = token;
+        list->tail->next=list->head;         
     }
     
     
@@ -95,6 +96,9 @@ struct token* search_token_manager(struct Active *list) {
         } 
         else if (answer == 'n') {
             temp = temp->next;
+        } 
+        else if (answer == 'e') {
+            return NULL;
         } 
         else {
             printf("Wrong Answer\n");
