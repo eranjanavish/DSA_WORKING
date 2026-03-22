@@ -85,10 +85,10 @@ int main(){
                char option = question_answer("\n========================================\n"
                                                 "            QUEUE OPTIONS               \n"
                                                 "========================================\n"
-                                                "  [Q] Access Queue\n"
-                                                "  [M] Find Missed Token\n"
-                                                "  [C] Correct Last Service\n"
-                                                "  [E] Exit to Main Menu\n"
+                                                "  [q] Access Queue\n"
+                                                "  [m] Find Missed Token\n"
+                                                "  [c] Correct Last Service\n"
+                                                "  [e] Exit to Main Menu\n"
                                                 "----------------------------------------\n"
                                                 " Enter your choice : ");
                 
@@ -192,7 +192,7 @@ int main(){
 
         else if(answer=='r')
         {
-                char confirm = question_answer("Are you sure? All records will be cleared (y/n)\n==>");
+                char confirm = question_answer("*** Are you sure? All records will be cleared ! ***(y/n)\n==>");
                     if(confirm=='y'){
                     for(int i=0;i<2;i++){
                     clear_stack(counter_list[i]->stack);
@@ -201,11 +201,11 @@ int main(){
         printf("\n** All stacks cleared. System reset for new day **\n");
     }
     else{
-        printf("** Reset cancelled **\n");
+        printf("** Reset cancelled ! **\n");
     }
 }    
         else{
-            printf("** Wrong input selected **\n");
+            printf("** Wrong input selected ! **\n");
         }
             
             
