@@ -87,6 +87,7 @@ int main(){
                                                 "========================================\n"
                                                 "  [Q] Access Queue\n"
                                                 "  [M] Find Missed Token\n"
+                                                "  [C] Correct Last Service\n"
                                                 "  [E] Exit to Main Menu\n"
                                                 "----------------------------------------\n"
                                                 " Enter your choice : ");
