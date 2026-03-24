@@ -26,8 +26,7 @@ void serve_customer(struct Stack *stack,struct token *token){
                             }
 }
 
-// use this commnad to run the c file -  gcc main.c ./Token_Generator/token.c Counter_Mangment_System/CMS.c Queue_managment_system/Queue.c Ongoing_Counter_Stack/stack.c Ongoing_Counter_Stack/mising.c Active_Service_Reocrd/Active.c Completed_service_records/complete.c Service_List/service_list.c -o token_program
-//And then -  ./token_program     
+    
 int main(){
     
 
@@ -43,7 +42,7 @@ int main(){
     
         
         
-        //Starts the program
+        
         while(1){
 
         printf("========================================\n");
