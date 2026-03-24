@@ -60,9 +60,14 @@ void extract_from_stack(struct Counter *counter,struct complete *list){
             counter_problem++;
         }
     }
-    printf("\n=== Operations of Counter %d === \n\n\n",counter->id);
-    printf("Completed Tokens : %d\n",counter_completed);
-    printf("Problem Tokens : %d\n",counter_problem);
+    printf("\n+======================================+\n");
+    printf("|       COUNTER %d OPERATIONS          |\n", counter->id);
+    printf("+======================================+\n");
+
+    printf("|  Completed Tokens : %-15d |\n", counter_completed);
+    printf("|  Problem Tokens   : %-15d |\n", counter_problem);
+
+    printf("+======================================+\n\n");
     
 }
 
@@ -147,6 +152,7 @@ void complete_list_view(struct complete *list){
         printf(" %-22s : %d\n",  "Phone Number", token->phone_number);
         printf(" %-22s : %s\n",  "Address", token->address);
         printf(" %-22s : %lld\n","Issue Date", token->date/1000000);
+        printf(" %-22s : %lld\n","Time took to service", service_time(token));
         printf(" %-22s : %s\n",  "Service Type", token->service);
     
         printf("========================================\n\n");
