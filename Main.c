@@ -83,7 +83,7 @@ int main(){
                 bool is_on = true;
                 while (is_on){
                char option = question_answer("\n========================================\n"
-                                                "            QUEUE OPTIONS               \n"
+                                                "               OPTIONS               \n"
                                                 "========================================\n"
                                                 "  [q] Access Queue\n"
                                                 "  [m] Find Missed Token\n"
